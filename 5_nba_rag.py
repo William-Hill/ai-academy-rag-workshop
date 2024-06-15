@@ -32,6 +32,23 @@ def query_rag():
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
 
     #Finish adding the RAG query below
+    user_message = input("Enter a topic to learn about:")
+
+    results = db.similarity_search_with_score(user_message, k=5)
+
+    context_text = "\n\n----\n\n".join([doc.page_content for doc, _score in results])
+
+    print("context_text:", context_text)
+
+    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
+
+    prompt = prompt_template.format(context=context_text, question=user_message)
+
+    model = Ollama(model='llama3')
+
+    response_text = model.invoke(prompt)
+
+    print(response_text)
 
 
 query_rag()

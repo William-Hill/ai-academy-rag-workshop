@@ -3,14 +3,18 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import CSVLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.schema.document import Document
-from get_embedding_function import get_embedding_function
 from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings.ollama import OllamaEmbeddings
 
 
 #Adds the NBA Collective Bargaining Agreement (CBA) to the ChromaDB Vector Database
 
 CHROMA_PATH = "chroma_nba_cba"
 DATA_PATH = "data_nba_cba"
+
+def get_embedding_function():
+    embeddings = OllamaEmbeddings(model="nomic-embed-text")
+    return embeddings
 
 
 def main():
